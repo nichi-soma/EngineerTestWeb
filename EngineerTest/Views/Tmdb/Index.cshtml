@@ -1,0 +1,137 @@
+﻿@model List<EngineerTest.MovieDTO>
+<style>
+
+    #apiDiv {
+        padding-left: 20px;
+    }
+
+        #apiDiv h4 {
+            margin: 10px 0;
+            color: #00e8ff;
+            font-size: 20px;
+        }
+
+        #apiDiv .textAlignCenter {
+            text-align: center;
+        }
+
+            #apiDiv .textAlignCenter img {
+                display: none;
+                width: 100px;
+            }
+
+        #apiDiv #message {
+            padding-top: 10px;
+        }
+
+            #apiDiv #message .resultDiv {
+                background: #FFF;
+                display: inline-block;
+            }
+
+                #apiDiv #message .resultDiv > p {
+                    color: #000;
+                    display: inline-block;
+                    width: 95%;
+                    padding: 10px;
+                    border-bottom: double 2px #CCC;
+                }
+
+                #apiDiv #message .resultDiv .result {
+                    width: 23%;
+                    height: 240px;
+                    padding: 35px;
+                    float: left;
+                    text-align: center;
+                    cursor: pointer;
+                }
+
+                    #apiDiv #message .resultDiv .result img {
+                        width: 75%;
+                        ;
+                    }
+
+                    #apiDiv #message .resultDiv .result p {
+                        margin: 0;
+                    }
+
+                        #apiDiv #message .resultDiv .result p a {
+                            color: #808080;
+                            text-decoration: none;
+                            font-size: 20px;
+                            height: 100px;
+                        }
+
+                            #apiDiv #message .resultDiv .result p a:hover {
+                                text-decoration: underline;
+                            }
+
+        #apiDiv form span {
+            color: red;
+            font-size: 20px;
+        }
+</style>
+@{ ViewBag.Title = "Integrating TheMovieDB (TMDB) API";}
+<h1>Integrating The Movie Database API</h1>
+<div id="apiDiv">
+    <h4>Enter the Search Text and Press Submit Button</h4>
+    <div row>
+        <div class="col-sm-6">
+            @using (Html.BeginForm())
+            {
+                <input type="text" name="param" />
+                <button id="submit">Submit</button>
+            }
+        </div>
+        <div class="col-sm-2">
+            @using (Html.BeginForm())
+            {
+                <input type="hidden" value="Upcoming" name="param" />
+                <button id="submit" class="btn btn-info">
+                    Upcoming
+                </button>
+
+            }
+        </div>
+        <div class="col-sm-2">
+            @using (Html.BeginForm())
+            {
+                <input type="hidden" value="TopRated" name="param" />
+                <button id="submit" class="btn btn-info">
+                    Top Rated
+                </button>
+
+            }
+        </div>
+        <div class="col-sm-2">
+            @using (Html.BeginForm())
+            {
+                <input type="hidden" value="Popular" name="param" />
+                <button id="submit" class="btn btn-info">
+                    Popular
+                </button>
+
+            }
+        </div>
+    </div>
+    <div id="message">
+        @(Html.Raw(ViewBag.Result))
+
+        <div class="resultDiv">
+            <p>Movies</p>
+            @{
+                if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        string image = item.poster_path == null ? Url.Content("~/images/no-image.png") : "https://image.tmdb.org/t/p/w500/" + item.poster_path;
+
+                        <div class="result" resourceId="@item.id"><img src="@image" /><p>@item.title</p></div>
+
+                    }
+                }
+            }
+        </div>
+
+    </div>
+</div>
